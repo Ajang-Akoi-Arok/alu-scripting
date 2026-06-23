@@ -1,47 +1,17 @@
 #!/usr/bin/python3
-"""
-Function to query Reddit API and get top 10 hot posts
-"""
+"""Prints the title of the first 10 hot posts listed for a given subreddit"""
+
 import requests
 
 
 def top_ten(subreddit):
-    """
-    Queries the Reddit API and prints the titles of the first 10 hot posts
-    for a given subreddit.
-    
-    Args:
-        subreddit (str): The name of the subreddit to query
-    
-    Returns:
-        None: Prints titles or None if invalid subreddit
-    """
-    # Set up the URL and headers
-    url = f"https://www.reddit.com/r/{subreddit}/hot.json"
-    headers = {
-        'User-Agent': 'MyRedditBot/1.0 (com.example.mybot)'
-    }
-    params = {
-        'limit': 10
-    }
-    
+    """Main function"""
+    URL = "https://www.reddit.com/r/{}/hot.json?limit=10".format(subreddit)
+
+    HEADERS = {"User-Agent": "PostmanRuntime/7.35.0"}
     try:
-        # Make the request with redirects disabled
-        response = requests.get(url, headers=headers, params=params, 
-                               allow_redirects=False)
-        
-        # Check if the request was successful and not a redirect
-        if response.status_code == 200:
-            data = response.json()
-            posts = data['data']['children']
-            
-            # Print the titles of the first 10 posts
-            for post in posts:
-                print(post['data']['title'])
-        else:
-            # Invalid subreddit or other error
-            print(None)
-            
-    except requests.exceptions.RequestException:
-        # Network error or other exception
+        RESPONSE = requests.get(URL, headers=HEADERS, allow_redirects=False)
+        HOT_POSTS = RESPONSE.json().get("data").get("children")
+        [print(post.get('data').get('title')) for post in HOT_POSTS]
+    except Exception:
         print(None)
