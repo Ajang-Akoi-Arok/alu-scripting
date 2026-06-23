@@ -16,7 +16,7 @@ def top_ten(subreddit):
     Returns:
         None: Prints titles or None if invalid subreddit
     """
-    url = "https://www.reddit.com/r/{}/hot.json".format(subreddit)
+    url = f"https://www.reddit.com/r/{subreddit}/hot.json"
     headers = {
         'User-Agent': 'MyRedditBot/1.0'
     }
