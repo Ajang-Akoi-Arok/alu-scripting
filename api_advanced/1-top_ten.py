@@ -5,13 +5,14 @@ import requests
 
 def top_ten(subreddit):
     """Print the first 10 hot post titles, or None if invalid."""
-    url = "https://www.reddit.com/r/{}/hot.json".format(subreddit)
-    headers = {"User-Agent": "PostmanRuntime/7.35.0"}
-    params = {"limit": 10}
-    response = requests.get(url, headers=headers, params=params,
-                            allow_redirects=False)
-    if response.status_code != 200:
+    URL = "https://www.reddit.com/r/{}/hot.json".format(subreddit)
+    HEADERS = {"User-Agent": "PostmanRuntime/7.35.0"}
+    PARAMS = {"limit": 10}
+    try:
+        RESPONSE = requests.get(URL, headers=HEADERS, params=PARAMS,
+                                allow_redirects=False)
+        HOT_POSTS = RESPONSE.json().get("data").get("children")
+        for post in HOT_POSTS:
+            print(post.get("data").get("title"))
+    except Exception:
         print(None)
-        return
-    for post in response.json().get("data", {}).get("children", []):
-        print(post.get("data", {}).get("title"))
